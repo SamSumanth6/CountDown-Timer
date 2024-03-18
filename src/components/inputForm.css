@@ -1,0 +1,27 @@
+.container{
+    display: contents;
+}
+
+.input-form{
+    margin:20px 0px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: 3px solid white;
+    color: white;
+    background: linear-gradient(
+    90deg,
+    rgb(131, 123, 183) 0%,
+    rgba(100, 115, 255, 1) 100%
+  );
+}
+
+.btn{
+    border-radius: 5px;
+    border: 3px solid white;
+    color: white;
+    background: linear-gradient(
+    90deg,
+    rgb(131, 123, 183) 0%,
+    rgba(100, 115, 255, 1) 100%
+    );
+}
