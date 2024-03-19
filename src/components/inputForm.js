@@ -3,11 +3,26 @@ import './inputForm.css'
 
 const InputForm = ()=> {
     const [defaultValue, setDefaultValue] = useState("")
+    const [toggleBtn, setToggleBtn] = useState(false);
+
+    const handleBtn =()=>{
+      setToggleBtn(!toggleBtn);
+    }
+
+    const handleDateChange = (e)=>{
+      setDefaultValue(e.target.value)
+    }
 
     useEffect(() => {
+      const updateDateTime = () => {
         const now = new Date();
         const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         setDefaultValue(formattedDate);
+      };
+      updateDateTime();
+
+      const interval = setInterval(updateDateTime, 1000);
+      return () => clearInterval(interval);
       }, []);
   return (
     <div className='container'>
@@ -17,10 +32,16 @@ const InputForm = ()=> {
             className='input-form'
             name="meeting-time"
             value={defaultValue}
-            min="2018-06-07T00:00"
-            max="2018-06-14T00:00" 
+            min={defaultValue}
+            max="2024-06-14T00:00" 
+            onChange={handleDateChange}
         />
-        <button className='btn'>Start Timer</button>
+        {toggleBtn? <button className='btn' onClick={handleBtn}>Cancel Timer</button>
+        :
+          <button className='btn-cancel' onClick={handleBtn}>Start Timer</button>
+          }
+        
+        
     </div>
   )
 }

@@ -15,7 +15,22 @@
   );
 }
 
+.input-form::-webkit-datetime-edit-year-field{
+    color: white;
+}
+
 .btn{
+    border-radius: 5px;
+    border: 3px solid white;
+    color: white;
+    background: linear-gradient(
+    90deg,
+    rgb(131, 123, 183) 0%,
+    rgba(100, 115, 255, 1) 100%
+    );
+}
+
+.btn-cancel{
     border-radius: 5px;
     border: 3px solid white;
     color: white;
