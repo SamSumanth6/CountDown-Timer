@@ -3,7 +3,7 @@ import './card.css';
 
 const Card = ({ remainingTime }) => {
   const { days, hours, minutes, seconds } = remainingTime;
-  const isLongDuration = days > 100;
+  const isLongDuration = days > 99;
 
   return (
     <div className='box'>
