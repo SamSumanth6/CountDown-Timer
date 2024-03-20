@@ -1,49 +1,67 @@
-import React,{useState, useEffect} from 'react'
-import './inputForm.css'
+import React, { useState, useEffect } from 'react';
+import './inputForm.css';
 
-const InputForm = ()=> {
-    const [defaultValue, setDefaultValue] = useState("")
-    const [toggleBtn, setToggleBtn] = useState(false);
+const InputForm = ({ setRemainingTime }) => {
+  const [selectedDateTime, setSelectedDateTime] = useState('');
+  const [timerId, setTimerId] = useState(null);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-    const handleBtn =()=>{
-      setToggleBtn(!toggleBtn);
+  const handleStartTimer = () => {
+    const selectedTime = new Date(selectedDateTime).getTime();
+    const currentTime = new Date().getTime();
+    const timeDifference = selectedTime - currentTime;
+
+    if (timeDifference > 0) {
+      const intervalId = setInterval(() => {
+        const updatedTime = selectedTime - new Date().getTime();
+        if (updatedTime <= 0) {
+          clearInterval(intervalId);
+          setRemainingTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          setIsTimerRunning(false);
+        } else {
+          const days = Math.floor(updatedTime / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((updatedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((updatedTime % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((updatedTime % (1000 * 60)) / 1000);
+          setRemainingTime({ days, hours, minutes, seconds });
+        }
+      }, 1000);
+      setTimerId(intervalId);
+      setIsTimerRunning(true);
     }
+  };
 
-    const handleDateChange = (e)=>{
-      setDefaultValue(e.target.value)
-    }
+  const handleCancelTimer = () => {
+    clearInterval(timerId);
+    setRemainingTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    setIsTimerRunning(false);
+  };
 
-    useEffect(() => {
-      const updateDateTime = () => {
-        const now = new Date();
-        const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        setDefaultValue(formattedDate);
-      };
-      updateDateTime();
+  const handleDateTimeChange = (e) => {
+    setSelectedDateTime(e.target.value);
+  };
 
-      const interval = setInterval(updateDateTime, 1000);
-      return () => clearInterval(interval);
-      }, []);
+  useEffect(() => {
+    return () => clearInterval(timerId);
+  }, [timerId]);
+
   return (
     <div className='container'>
-        <input
-            type="datetime-local"
-            id="time"
-            className='input-form'
-            name="meeting-time"
-            value={defaultValue}
-            min={defaultValue}
-            max="2024-06-14T00:00" 
-            onChange={handleDateChange}
-        />
-        {toggleBtn? <button className='btn' onClick={handleBtn}>Cancel Timer</button>
-        :
-          <button className='btn-cancel' onClick={handleBtn}>Start Timer</button>
-          }
-        
-        
+      <input
+        type="datetime-local"
+        id="time"
+        className='input-form'
+        name="meeting-time"
+        value={selectedDateTime}
+        onChange={handleDateTimeChange}
+      />
+      {isTimerRunning ? (
+        <button className='btn-cancel' onClick={handleCancelTimer}>Cancel Timer</button>
+      ) : (
+        <button className='btn-start' onClick={handleStartTimer}>Start Timer</button>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default InputForm;

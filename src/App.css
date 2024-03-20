@@ -1,18 +1,18 @@
-.App{
+.App {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 80vh;
-}
-
-.heading{
+  }
+  
+  .heading {
     color: var(--css-white);
     display: flex;
     font-size: 45px;
-}
-
-.heading-timer{
+  }
+  
+  .heading-timer {
     color: #4a148c;
-}
-
+  }
+  
