@@ -4,6 +4,7 @@ import './card.css';
 const Card = ({ remainingTime }) => {
   const { days, hours, minutes, seconds } = remainingTime;
   const isLongDuration = days > 99;
+  const hasTimeElapsed = days === 0 && hours === 0 && minutes === 0 && seconds === -1; 
 
   return (
     <div className='box'>
@@ -12,7 +13,7 @@ const Card = ({ remainingTime }) => {
           <p className='long-duration-text'>Selected time is more than 100 days!</p>
         </div>
       ) : (
-        days === 0 && hours === 0 && minutes === 0 && seconds === 0 ? (
+        hasTimeElapsed ? ( 
           <div className='congrats'>
             <p className='congrats-text'>🎉 The Countdown is over! What's next on your adventure? 🎉</p>
           </div>

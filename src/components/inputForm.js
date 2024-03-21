@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './inputForm.css';
 
-const InputForm = ({ setRemainingTime }) => {
+const InputForm = ({ setRemainingTime, playTimerSound }) => {
   const [selectedDateTime, setSelectedDateTime] = useState('');
   const [timerId, setTimerId] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -11,13 +11,14 @@ const InputForm = ({ setRemainingTime }) => {
     const currentTime = new Date().getTime();
     const timeDifference = selectedTime - currentTime;
 
-    if (timeDifference > 0) {
+    if (timeDifference > -1) {
       const intervalId = setInterval(() => {
         const updatedTime = selectedTime - new Date().getTime();
-        if (updatedTime <= 0) {
+        if (updatedTime <= -1) {
           clearInterval(intervalId);
-          setRemainingTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          setRemainingTime({ days: 0, hours: 0, minutes: 0, seconds: -1 });
           setIsTimerRunning(false);
+          playTimerSound();
         } else {
           const days = Math.floor(updatedTime / (1000 * 60 * 60 * 24));
           const hours = Math.floor((updatedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
